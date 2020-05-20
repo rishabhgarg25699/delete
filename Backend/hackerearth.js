@@ -6,20 +6,20 @@ route.get('/', function (req, res) {
     res.send(code);
 })
 
-route.post('/', async function (req, res) {
-    code = req.body.task;
-    input = req.body.input;
-    language = req.body.language;
-
+socket.on('send', (data) => {
+    code = data.task;
+    input = data.input;
+    language = data.language;
     let result = await main.compile(code, input, language);
     if (result.status === 0) {
         console.log("error while compiling the code");
-        res.send(result.final);
+        socket.emit(result.final)
+        // res.send(result.final);
     }
     else if (result.status === 1) {
         console.log("compiled with errors in code");
-        // console.log(result);
-        res.send(result.final);
+        socket.emit(result.final)
+        // res.send(result.final);
     }
     else {
         console.log("--------------successfully compile---------------");
@@ -27,20 +27,58 @@ route.post('/', async function (req, res) {
         let result2 = await main.run(code, input, language);
         if (result2.status === 0) {
             console.log("error while running the code");
-            res.send(result2.final);
+            socket.emit(result2.final)
+            // res.send(result2.final);
         }
         else if (result2.status === 1) {
             console.log("run with errors in code");
-            res.send(result2.final);
+            socket.emit(result2.final)
+            // res.send(result2.final);
         }
         else {
             console.log("-------------------successfully run---------------------");
             // console.log("Result is " + result2.final.run_status.output);
-            res.send(result2.final);
+            socket.emit(result2.final)
+            // res.send(result2.final);
         }
     }
-    res.end();
+    // res.end();
 })
+// route.post('/', async function (req, res) {
+//     code = req.body.task;
+//     input = req.body.input;
+//     language = req.body.language;
+
+//     let result = await main.compile(code, input, language);
+//     if (result.status === 0) {
+//         console.log("error while compiling the code");
+//         res.send(result.final);
+//     }
+//     else if (result.status === 1) {
+//         console.log("compiled with errors in code");
+//         // console.log(result);
+//         res.send(result.final);
+//     }
+//     else {
+//         console.log("--------------successfully compile---------------");
+//         // console.log(result);
+//         let result2 = await main.run(code, input, language);
+//         if (result2.status === 0) {
+//             console.log("error while running the code");
+//             res.send(result2.final);
+//         }
+//         else if (result2.status === 1) {
+//             console.log("run with errors in code");
+//             res.send(result2.final);
+//         }
+//         else {
+//             console.log("-------------------successfully run---------------------");
+//             // console.log("Result is " + result2.final.run_status.output);
+//             res.send(result2.final);
+//         }
+//     }
+//     res.end();
+// })
 
 module.exports = route;
 

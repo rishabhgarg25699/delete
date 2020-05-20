@@ -19,7 +19,7 @@ app.use('/', express.static(__dirname + "/Frontend"));
 
 io.on('connection', (socket) => {
     console.log("New socket formed from " + socket.id)
-    usersockets[j] = socket.id; 
+    usersockets[j] = socket.id;
     j++;
 })
 
