@@ -13,11 +13,14 @@ let usersockets = {}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+let j = 1;
+
 app.use('/', express.static(__dirname + "/Frontend"));
 
 io.on('connection', (socket) => {
     console.log("New socket formed from " + socket.id)
-
+    usersockets[j] = socket.id; 
+    j++;
 })
 
 app.use('/todo/', todo);
