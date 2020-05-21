@@ -134,8 +134,7 @@ $("#first_button").click(function () {
     })
 
     socket.on('rcv', function (data) {
-        console.log("--------------------------");
-        console.log(data);
+        console.log("index.js " + data.id + " " + socket.id);
         console.log(data.run_status.output);
         if (data.compile_status === "OK") {
             outputbox.empty();

@@ -19,13 +19,13 @@ app.use('/', express.static(__dirname + "/Frontend"));
 io.on('connection', (socket) => {
     console.log("New socket formed from " + socket.id)
 
-    socket.on('send', (data) => {
-        console.log("-------------------- AAGAYA HU SEND ME --------------------------------------")
+    socket.on('send', async (data) => {
         code = data.task;
         input = data.input;
         language = data.language;
+
         let result = await main.compile(code, input, language);
-        console.log("-------------------- AAGAYA HU SEND ME --------------------------------------" + result.status);
+
         if (result.status === 0) {
             console.log("error while compiling the code");
             socket.emit('rcv', result.final)
@@ -36,7 +36,9 @@ io.on('connection', (socket) => {
         }
         else {
             console.log("--------------successfully compile---------------");
+
             let result2 = await main.run(code, input, language);
+
             if (result2.status === 0) {
                 console.log("error while running the code");
                 socket.emit('rcv', result2.final)
@@ -47,7 +49,7 @@ io.on('connection', (socket) => {
             }
             else {
                 console.log("-------------------successfully run---------------------");
-                console.log("andar hu -------------------" + result2.final);
+                console.log("server.js" + result2.final.id + " " + socket.id);
                 socket.emit('rcv', result2.final)
             }
         }

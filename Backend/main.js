@@ -9,13 +9,10 @@ config.language = "C++";
 
 async function compile(code, input, language) {
     try {
-        console.log("-------------------- MAIN.JS Compile --------------------------------------")
         config.source = code;
         config.input = input;
         config.language = language;
-        console.log("AAJA--------------------")
         let result = JSON.parse(await hackerearth.compile(config));
-        console.log("----------------------" + result.compile_status);
         if (result.compile_status == "OK") {
             return { "status": 2, "final": result };
         }
@@ -24,7 +21,6 @@ async function compile(code, input, language) {
         }
     }
     catch (err) {
-        // console.log(err);
         return { "status": 0, "final": result };
     }
 }
@@ -36,9 +32,7 @@ async function run(code, input, language) {
         config.language = language;
         let result = JSON.parse(await hackerearth.run(config));
         if (result.run_status.status == "AC") {
-            // console.log("Main.js is " + result.run_status.output);
             return { "status": 2, "final": result };
-            // return (result);
         }
         else {
 
@@ -49,7 +43,6 @@ async function run(code, input, language) {
     }
     catch (err) {
         console.log("aaja choosle");
-        // console.log(err);
         return { "status": 0, "final": result };
     }
 }
