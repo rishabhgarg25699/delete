@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         code = data.task;
         input = data.input;
         language = data.language;
-        let result = main.compile(code, input, language);
+        let result = await main.compile(code, input, language);
         console.log("-------------------- AAGAYA HU SEND ME --------------------------------------" + result.status);
         if (result.status === 0) {
             console.log("error while compiling the code");
@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
         }
         else {
             console.log("--------------successfully compile---------------");
-            let result2 = main.run(code, input, language);
+            let result2 = await main.run(code, input, language);
             if (result2.status === 0) {
                 console.log("error while running the code");
                 socket.emit('rcv', result2.final)
