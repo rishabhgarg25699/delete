@@ -1,4 +1,8 @@
 let socket = io();
+socket.on('connected', () => {
+    console.log("Connected " + socket.id)
+})
+
 
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/twilight");
@@ -114,7 +118,6 @@ $("#clo").click(function () {
     editor.setTheme("ace/theme/clouds");
 });
 
-//-----------------------MAIN AJAX---------------------------------------
 $("#first_button").click(function () {
     let code = editor.getValue();
     let input1 = inputbox.val();
@@ -133,18 +136,18 @@ $("#first_button").click(function () {
     socket.on('rcv', function (data) {
         console.log("--------------------------");
         console.log(data);
-        // console.log(data.run_status.output);
-        if (data.compile_status === "OK") {
-            outputbox.empty();
-            outputbox.append(data.run_status.output);
-            time.append('<h6>' + data.run_status.time_used + '<h6>');
-            memory.append('<h6>' + data.run_status.memory_used + '<h6>');
-            share.append('<h6>' + data.web_link + '<h6>');
-        }
-        else {
-            outputbox.empty();
-            outputbox.append(data.compile_status);
-        }
+        console.log(data.run_status.output);
+        // if (data.compile_status === "OK") {
+        //     outputbox.empty();
+        //     outputbox.append(data.run_status.output);
+        //     time.append('<h6>' + data.run_status.time_used + '<h6>');
+        //     memory.append('<h6>' + data.run_status.memory_used + '<h6>');
+        //     share.append('<h6>' + data.web_link + '<h6>');
+        // }
+        // else {
+        //     outputbox.empty();
+        //     outputbox.append(data.compile_status);
+        // }
     })
 
     // console.log(input);

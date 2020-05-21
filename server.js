@@ -1,30 +1,58 @@
 const express = require('express');
-const app = express()
-const todo = require('./Backend/hackerearth');
-var port = process.env.PORT || 2000;
-
+const path = require('path')
 const socketio = require('socket.io') ///////////////
-const http = require('http')          //////////////
+const http = require('http')   //////////////
+
+const app = express()
 const server = http.createServer(app) //////////////
 const io = socketio(server)           /////////////
 
-let usersockets = {}
+const main = require('./Backend/main');
+
+var port = process.env.PORT || 2000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-let j = 1;
 
 app.use('/', express.static(__dirname + "/Frontend"));
 
 io.on('connection', (socket) => {
     console.log("New socket formed from " + socket.id)
-    usersockets[j] = socket.id;
-    j++;
+
+    socket.on('send', (data) => {
+        console.log("-------------------- AAGAYA HU SEND ME --------------------------------------")
+        code = data.task;
+        input = data.input;
+        language = data.language;
+        let result = main.compile(code, input, language);
+        console.log("-------------------- AAGAYA HU SEND ME --------------------------------------" + result.status);
+        if (result.status === 0) {
+            console.log("error while compiling the code");
+            socket.emit('rcv', result.final)
+        }
+        else if (result.status === 1) {
+            console.log("compiled with errors in code");
+            socket.emit('rcv', result.final)
+        }
+        else {
+            console.log("--------------successfully compile---------------");
+            let result2 = main.run(code, input, language);
+            if (result2.status === 0) {
+                console.log("error while running the code");
+                socket.emit('rcv', result2.final)
+            }
+            else if (result2.status === 1) {
+                console.log("run with errors in code");
+                socket.emit('rcv', result2.final)
+            }
+            else {
+                console.log("-------------------successfully run---------------------");
+                console.log("andar hu -------------------" + result2.final);
+                socket.emit('rcv', result2.final)
+            }
+        }
+    })
 })
 
-app.use('/todo/', todo);
-
 console.log("Server started at http://localhost:2000/");
-
-app.listen(port);
+server.listen(port);

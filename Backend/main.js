@@ -9,13 +9,15 @@ config.language = "C++";
 
 async function compile(code, input, language) {
     try {
+        console.log("-------------------- MAIN.JS Compile --------------------------------------")
         config.source = code;
         config.input = input;
         config.language = language;
+        console.log("AAJA--------------------")
         let result = JSON.parse(await hackerearth.compile(config));
+        console.log("----------------------" + result.compile_status);
         if (result.compile_status == "OK") {
             return { "status": 2, "final": result };
-            // return (result);
         }
         else {
             return { "status": 1, "final": result };
@@ -39,11 +41,14 @@ async function run(code, input, language) {
             // return (result);
         }
         else {
+
+            console.log("bahar " + result);
             return { "status": 1, "final": result };
         }
 
     }
     catch (err) {
+        console.log("aaja choosle");
         // console.log(err);
         return { "status": 0, "final": result };
     }
