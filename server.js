@@ -19,7 +19,7 @@ app.use('/', express.static(__dirname + "/Frontend"));
 io.on('connection', (socket) => {
     console.log("New socket formed from " + socket.id)
 
-    socket.on('send', async (data) => {
+    socket.on('send', async (data) => {                //     1st function 
         code = data.task;
         input = data.input;
         language = data.language;
@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
             else {
                 console.log("-------------------successfully run---------------------");
                 console.log("server.js" + result2.final.id + " " + socket.id);
-                socket.emit('rcv', result2.final)
+                io.to(socket.id).emit('rcv', result2.final)                                  // 2nd fucntion 
             }
         }
     })
