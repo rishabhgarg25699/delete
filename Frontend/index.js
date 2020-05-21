@@ -137,6 +137,7 @@ $("#first_button").click(function () {
         console.log("index.js " + data.code_id + " " + socket.id + " " + "Hello" + data.run_status.output);
         if (data.compile_status === "OK") {
             outputbox.empty();
+            time.empty();
             outputbox.append(data.run_status.output);
             time.append('<h6>' + data.run_status.time_used + '<h6>');
             memory.append('<h6>' + data.run_status.memory_used + '<h6>');

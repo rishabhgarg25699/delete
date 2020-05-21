@@ -19,13 +19,12 @@ app.use('/', express.static(__dirname + "/Frontend"));
 io.on('connection', (socket) => {
     console.log("New socket formed from " + socket.id)
 
-    socket.on('send', async (data) => {               
-        code = data.task;
-        input = data.input;
-        language = data.language;
-        console.log(code);                             ////////////////  THIS CODE  GIVES DIFFERENT TEXT
+    socket.on('send', async (data) => {
+        let code = data.task;
+        let input = data.input;
+        let language = data.language;
         let result = await main.compile(code, input, language);
-        console.log(code);                             ////////////////   THIS CODE GIVES SAME TEXT
+
         if (result.status === 0) {
             console.log("error while compiling the code");
             socket.emit('rcv', result.final)
