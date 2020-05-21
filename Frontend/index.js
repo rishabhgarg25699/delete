@@ -126,7 +126,7 @@ $("#first_button").click(function () {
     memory.empty();
     share.empty();
     outputbox.append(wait);
-
+    console.log(code);
     socket.emit('send', {
         task: code,
         input: input1,
@@ -134,8 +134,7 @@ $("#first_button").click(function () {
     })
 
     socket.on('rcv', function (data) {
-        console.log("index.js " + data.code_id + " " + socket.id);
-        console.log(data.run_status.output);
+        console.log("index.js " + data.code_id + " " + socket.id + " " + "Hello" + data.run_status.output);
         if (data.compile_status === "OK") {
             outputbox.empty();
             outputbox.append(data.run_status.output);

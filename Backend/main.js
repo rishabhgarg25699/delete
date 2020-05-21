@@ -12,7 +12,7 @@ async function compile(code, input, language) {
         config.source = code;
         config.input = input;
         config.language = language;
-        let result = JSON.parse(await hackerearth.compile(config));
+        let result = await JSON.parse(await hackerearth.compile(config));
         if (result.compile_status == "OK") {
             return { "status": 2, "final": result };
         }
@@ -30,7 +30,7 @@ async function run(code, input, language) {
         config.source = code;
         config.input = input;
         config.language = language;
-        let result = JSON.parse(await hackerearth.run(config));
+        let result = await JSON.parse(await hackerearth.run(config));
         if (result.run_status.status == "AC") {
             return { "status": 2, "final": result };
         }
